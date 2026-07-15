@@ -14,9 +14,12 @@ class MULTIPLAYERFPS_API AWeapon : public AActor
 
 public:
 	AWeapon();
+	virtual void OnRep_Instigator() override;
 	
 	USkeletalMeshComponent* GetMesh1P() const;
 	USkeletalMeshComponent* GetMesh3P() const;
+	
+	void AttachToOwner() const;
 
 protected:
 	virtual void BeginPlay() override;
@@ -30,4 +33,6 @@ private:
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USkeletalMeshComponent> Mesh3P;
+	
+	void SetMeshVisibilities(const APawn* OwningPawn) const;
 };

@@ -48,9 +48,13 @@ void UCombatComponent::InitAimReleased()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("InitAimReleased"), false);
 }
 
-void UCombatComponent::SpawnInventory()
+void UCombatComponent::SpawnInventory() const
 {
 	AWeapon* NewWeapon = SpawnWeapon(DefaultWeaponClass);
+	if (IsValid(NewWeapon))
+	{
+		NewWeapon->AttachToOwner();
+	}
 }
 
 AWeapon* UCombatComponent::SpawnWeapon(TSubclassOf<AWeapon> WeaponClass) const

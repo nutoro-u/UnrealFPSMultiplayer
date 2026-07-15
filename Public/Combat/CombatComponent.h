@@ -31,7 +31,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="FPS|Weapon")
 	TObjectPtr<UWeaponData> WeaponData;
 	
-	void SpawnInventory();
+	void SpawnInventory() const;
 protected:
 
 private:
