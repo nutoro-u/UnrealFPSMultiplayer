@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "Combat/CombatComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Data/WeaponData.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -67,6 +68,22 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	ShooterInputComponent->BindAction(AimWeaponAction, ETriggerEvent::Started, this, &ThisClass::InputAimPressed);
 	ShooterInputComponent->BindAction(AimWeaponAction, ETriggerEvent::Completed, this, &ThisClass::InputAimReleased);
 	ShooterInputComponent->BindAction(ReloadWeaponAction, ETriggerEvent::Started, this, &ThisClass::InputReloadWeapon);
+}
+
+void AShooterCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	
+	if (IsValid(Combat))
+	{
+		Combat->SpawnInventory();
+	}
+}
+
+FName AShooterCharacter::GetWeaponAttachPoint_Implementation(const FGameplayTag& WeaponType) const
+{
+	checkf(Combat->WeaponData, TEXT("Weapon data asset not found"));
+	return Combat->WeaponData->GripPoints.FindChecked(WeaponType);
 }
 
 void AShooterCharacter::InputCycleWeapons()
